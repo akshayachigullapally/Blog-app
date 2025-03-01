@@ -1,0 +1,26 @@
+.signin-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    
+    background: black;
+   /* background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT27j6d98nqz5TGDRznZbAgAM_W2RiBMDGVmg&s');
+      */
+    /* background-color: lightcyan; */
+    background-image: linear-gradient(white,lightcyan,black);
+    background-size: cover;  /* or contain, depending on what you need */
+background-repeat: no-repeat;
+background-position: center;
+
+}
+  
+  .signin-box {
+   
+    padding: 30px;
+    border-radius: 8px;
+    
+   
+  }
+  
+  

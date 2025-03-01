@@ -1,0 +1,67 @@
+.admin-container {
+    /* background-image: url('data:image/jpeg;base64,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'); */
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlihaLBmROLMxjpTovk9mQx4Pw64hxg7QT6GUItKP-AOCzBmNkfGqzHEdAIjTlI7t_p04&usqp=CAU');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  
+  .user-card {
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid white;
+   box-shadow: 0 0 10px white;
+  }
+  
+  .user-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .role-badge, .status-badge {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .action-button {
+    transition: background-color 0.3s ease;
+  }
+  
+  .toast-custom {
+    border-radius: 5px;
+    padding: 10px;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .shiny-border {
+    border: 1px solid white;
+  border-radius: 10px;
+  background-clip: padding-box;
+  position: relative;
+  box-shadow: 0 0 10px white;
+  }
+  
+  .shiny-border:before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+  
+    background: linear-gradient(45deg,white, #6e7a6e, #8baac1);
+    border-radius: 12px;
+    z-index: -1;
+    animation: shine 2s infinite linear;
+  }
+  
+  @keyframes shine {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }

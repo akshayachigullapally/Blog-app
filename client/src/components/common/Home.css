@@ -1,0 +1,333 @@
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glow {
+    0% {
+      text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff;
+    }
+    50% {
+      text-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #ffffff;
+    }
+    100% {
+      text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff;
+    }
+  }
+
+/* Home.css */
+.hero-container {
+    background-image: url('https://www.blendb2b.com/hs-fs/hubfs/BLD%20techncial%20blog.jpeg?height=397&name=BLD%20techncial%20blog.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Full screen height */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white; /* Ensuring text is visible */
+    text-align: center;
+    font-family: Arial, sans-serif;
+    position: relative;
+}
+
+/* Overlay for dark blur effect */
+.hero-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    z-index: 1;
+}
+
+/* Ensures text and box stay above the overlay */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 1.5s ease-in-out;
+    
+    border: 2px solid white;  /* White border */
+    border-radius: 10px;  /* Smooth edges */
+    padding: 8px;  /* Space inside the box */
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); /* Shiny glow effect */
+    background: rgba(255, 255, 255, 0.1); /* Slight transparent white */
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    text-align: center;
+    width: 600px;
+    margin: auto;
+    transition: all 0.3s ease-in-out;
+  }
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    
+}
+
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    animation: fadeIn 1.5s ease-in-out; /* Animation for subtitle */
+}
+
+
+
+/* General styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+
+
+
+
+
+/* Role selection for signed-in users */
+.role-selection-container {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMSEhUTEhIVFRUVFRcXFxUVFRUXFxcXFxUXFxcVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKBQUFDgUFDisZExkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIALcBEwMBIgACEQEDEQH/xAAYAAADAQEAAAAAAAAAAAAAAAAAAQIDB//EAB4QAQEBAQEBAAIDAAAAAAAAAAABEQISIWHwQVGB/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AOPaCVQHJjTwCsLFFKBeU8xdAJsGLwgZ2F5aeReQQUaTn8DwCQ08l5BEUqQeQReSkadRPkE4JGmFARYDsKgWnDEAxgh0EWCK0UE+TwQQCMQqApDQBnqJTgK04mq5oKFhyiwEq5hKA0/k4fIFhYvyeAhXlUMEWDk5FQC8lOVngM/A8NLE2Anyny0LAZ4MaYJAZ+TnK7BYCPKby0w8BheS65alcBjIo7hYBaD8jALAACIcEXgJV5PFYBSKkEq5ATIKuHgM5FSKwgVgkEVPoIi5BzyrALBzFYMArBIo8BnSsXn4PyDPB5aeUgnC8qw5AZ2BpU2QGdKrsTYCMT00SDLweLxOAUhdUVNgHL+4BIATy0RioCocI7QPGkjPmtJ0ByKqVQBgz+1SCAU5aeYXK5AKQYuQgEgioMBMgxRUCFPBgJqcaYWAmQsXYVBFn1Ni6mgmlVJoIpVXRAixONE2gipsXhAjyFYARogjSAOT8iRUgCfGvPKMacAMKn6MFSHORzFyAUh8nRAPTidPm7QVIOoengFhYcPASLFYVAtKw8FgJsTYuwugZ2Iq+iBNKRVhQE1NXUAmpqkgmliqQAJMERcTFwFSKwoqAriHhcq0E2HOTqp0CuOcX9T6PnQPBhyFAGL55ZrkBZyDBQMCDQKimQELALQKp6p1NgIwVWf0V+giwqq0rQRU1VqQTUq6SCeiVUgWgaYJ4Xyz1QLitRFSg1isZ89NJQTn1cgL0C+a01nyc6Bco3+Cn05AOHBh6B8qTFADpDQEAhUCpQWlv0AXRXstA9Z2qxIFYmj0m0BaXVHlNBNpaLPpUBSLRAKg8AJkPClVKBqJUBXKp0iNIBnKnVQFf6MJQL5ioylaSgoJAK1WoGg0gZzo/QKK0ek3oBAzvZegaCs9P0B6z6p2l0BfyV5SegKy6q+uk0E1OCloIsHPK9KgeBHoAOY0iIeg0hsvStBXK/SeaqAqU50kaC9F6T6EoNIadIGkqtYyrlBcp6z0aC9PU6VoKtL0i9ADtF6IpQP0WlaVoDqiUFoArTtR1QOotP0z7oHRU+iA9T1TTQK7+4TSdAE8U0SqgKFK0+AXzVSpkAK9C1FpygudYfNZ+hzQbaXPSLRoNuROmfoegaSnrKU50DSdHrPTlBVGpvRegO0anSvQK0Ws70Wg19RNqNF6BVCNFoKxPRTor0CLDqaAUWEIBygsAH5GKOgkxhUFylamgDtEpaAVKNRpaDXS9I0dUFynrKD0DfR6Y+x6Bt6P0x9HoLvYvSLQDTml6RolA/Q9s7QCr0PaNPmAvSoIBowxoJCh5BODD5O8gWg/JAZ6AA9JvJAB9GgAWiUAFanQALqkYASkYASHgAHDgACkQA4LQAApACsMAD0aAA0SgAcAAK5hyAAAAD//2Q==');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  position: relative;
+}
+
+/* Add an overlay to ensure text is readable over the background */
+.role-selection-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+}
+
+/* Ensure all content is above the overlay */
+.role-selection-container > * {
+  position: relative;
+  z-index: 2;
+}
+/* Content box that contains all elements */
+.content-box {
+  position: relative;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.85);
+  border-radius: 15px;
+  padding: 3rem;
+  width: 90%;
+  max-width: 1000px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.8s ease-out;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.user-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  animation: fadeIn 1s ease-out;
+}
+
+.profile-circle {
+  width: 80px;
+  height: 80px;
+  background-color: #7f96a8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  position: relative;
+}
+
+.profile-circle::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  right: -5px;
+  width: 15px;
+  height: 15px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.user-welcome h1 {
+  font-size: 2rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.user-welcome p {
+  color: #a0aec0;
+  margin: 0;
+}
+
+.journey-title {
+  font-size: 2rem;
+  margin: 1.5rem 0;
+  text-align: center;
+  position: relative;
+}
+
+.journey-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  border-radius: 3px;
+}
+
+.error-message {
+  color: #ef4444;
+  margin: 1rem 0;
+  text-align: center;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  background-color: rgba(239, 68, 68, 0.1);
+  border-radius: 5px;
+}
+.role-cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+ 
+  margin: 2rem 0 ;
+}
+
+.role-card {
+  flex: 1;
+  max-width: 300px;
+}
+
+.role-option {
+  cursor: pointer;
+  display: block;
+  height: 100%;
+}
+
+.role-input {
+  display: none;
+}
+
+.role-content {
+  border: 1px solid white;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: rgba(12, 12, 12, 0.7);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.role-input:checked + .role-content {
+  border-color: #e5e9ee;
+    box-shadow: 0 0 15px rgba(131, 157, 200, 0.5);
+    background-color: rgba(66, 66, 67, 0.9);
+    transform: translateY(-5px);
+}
+
+.role-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.admin-icon {
+  background-color: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+}
+
+.author-icon {
+  background-color: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+}
+
+.user-icon {
+  background-color: rgba(96, 165, 250, 0.15);
+  color: #60a5fa;
+}
+.role-content h3 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+  color: white;
+}
+
+.role-content p {
+  color: #a0aec0;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+  line-height: 1.5;
+}
+
+.role-info {
+  color: #a0aec0;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 80%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .content-box {
+    padding: 2rem 1.5rem;
+}
+
+  .role-cards {
+      flex-direction: column;
+      align-items: center;
+  }
+  
+  .role-card {
+      width: 100%;
+      max-width: 350px;
+      margin-bottom: 1rem;
+  }
+}
