@@ -10,7 +10,7 @@ import { useAuth } from '@clerk/clerk-react'
 import {  FaUserCircle, FaRegComment, FaRegClock, FaRegSmile, FaRegThumbsUp, FaReply, FaTrash } from 'react-icons/fa';
 
 function ArticleByID() {
-
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const { state } = useLocation()
   const { currentUser } = useContext(userAuthorContextObj)
   const [editArticleStatus, setEditArticleStatus] = useState(false)
@@ -36,7 +36,7 @@ function ArticleByID() {
     articleAfterChanges.dateOfModification = currentDate.getDate() + "-" + currentDate.getMonth() + "-" + currentDate.getFullYear()
 
     //make http post req
-    let res = await axios.put(`http://localhost:3000/author-api/article/${articleAfterChanges.articleId}`,
+    let res = await axios.put(`${BACKEND_URL}/author-api/article/${articleAfterChanges.articleId}`,
       articleAfterChanges,
       {
         headers: {
@@ -47,82 +47,46 @@ function ArticleByID() {
     if (res.data.message === 'article modified') {
       //change edit article status to false
       setEditArticleStatus(false);
-      navigate(`/author-profile/articles/${currentArticle.articleId}`, { currentArticle: res.data.payload })
+      navigate(`/author-profile/articles/${currentArticle.articleId}`, { state: res.data.payload })
     }
 
 
   }
 
 
-  // //add comment by user
+  //add comment by user
   async function addComment(commentObj){
     //add name of user to comment obj
     commentObj.nameOfUser=currentUser.firstName;
-    const currentDate = new Date();
-    commentObj.timestamp = currentDate.toLocaleString();
-    
     console.log(commentObj)
     //http put
-    let res=await axios.put(`http://localhost:3000/user-api/comment/${currentArticle.articleId}`,commentObj);
+    let res=await axios.put(`${BACKEND_URL}/user-api/comment/${currentArticle.articleId}`,commentObj);
     if(res.data.message==='comment added'){
       setCommentStatus(res.data.message)
-      setCurrentArticle(res.data.payload)
-      reset();
     }
   }
-  // Add this function to delete comments
-async function deleteComment(commentId) {
-  try {
-    // Create API request to delete comment
-    let res = await axios.delete(`http://localhost:3000/user-api/comment/${currentArticle.articleId}/${commentId}`);
-    
-    if (res.data.message === 'comment deleted') {
-      // Update current article with the updated data
-      setCurrentArticle(res.data.payload);
-      setCommentStatus('Comment deleted successfully');
+
+  async function deleteComment(commentText) {
+    try {
+      let res = await axios.delete(`${BACKEND_URL}/user-api/comment/${currentArticle.articleId}`, {
+        data: { comment: commentText } // Send the comment text in request body
+      });
+  
+      if (res.data.message === 'comment deleted') {
+        setCurrentArticle(res.data.payload); // Update article with modified comments
+        setCommentStatus('Comment deleted successfully');
+      }
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+      setCommentStatus('Failed to delete comment');
     }
-  } catch (error) {
-    console.error('Error deleting comment:', error);
-    setCommentStatus('Failed to delete comment');
   }
-}
-
-
-
-  // // Add comment by user
-  // async function addComment(commentObj) {
-  //   commentObj.nameOfUser = currentUser.firstName;
-
-  //   try {
-  //     // Add the comment
-  //     let res = await axios.put(
-  //       `http://localhost:3000/user-api/comment/${currentArticle.articleId}`,
-  //       commentObj
-  //     );
-
-  //     if (res.data.message === 'comment added') {
-  //       setCommentStatus(res.data.message);
-  //       reset();
-
-  //       // Fetch the updated article data to refresh the comments
-  //       const updatedArticleRes = await axios.get(
-  //         `http://localhost:3000/user-api/article/${state.articleId}`,state);
-
-  //       if (updatedArticleRes.data.message === 'article found') {
-  //         setCurrentArticle(updatedArticleRes.data.payload);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('Error adding comment:', error);
-  //     setCommentStatus('Failed to add comment');
-  //   }
-  // }
-
+  
 
   //delete article
   async function deleteArticle(){
     state.isArticleActive=false;
-    let res=await axios.put(`http://localhost:3000/author-api/articles/${currentArticle.articleId}`,state)
+    let res=await axios.put(`${BACKEND_URL}/author-api/articles/${state.articleId}`,state)
     if(res.data.message==='article deleted or restored'){
       setCurrentArticle(res.data.payload)
   }
@@ -130,7 +94,7 @@ async function deleteComment(commentId) {
   //restore article
   async function restoreArticle(){
     state.isArticleActive=true;
-    let res=await axios.put(`http://localhost:3000/author-api/articles/${currentArticle.articleId}`,state)
+    let res=await axios.put(`${BACKEND_URL}/author-api/articles/${state.articleId}`,state)
     if(res.data.message==='article deleted or restored'){
         setCurrentArticle(res.data.payload)
     }
@@ -144,22 +108,22 @@ async function deleteComment(commentId) {
           <div className="d-flex justify-contnet-between align-items-center article-header">
             <div className="mb-5 author-block w-100 px-4 py-2 rounded-2 d-flex justify-content-between align-items-center">
               <div>
-                <p className="display-3 article-title me-4">{currentArticle.title}</p>
+                <p className="display-3 article-title me-4">{state.title}</p>
                 {/* doc & dom */}
                 <span className="py-3">
                   <small className="text-secondary me-4">
-                    Created on : {currentArticle.dateOfCreation}
+                    Created on : {state.dateOfCreation}
                   </small>
                   <small className="text-secondary me-4">
-                    Modified on : {currentArticle.dateOfModification}
+                    Modified on : {state.dateOfModification}
                   </small>
                 </span>
 
               </div>
               {/* author details */}
               <div className="author-details text-center">
-                <img src={currentArticle.authorData.profileImageUrl} width='60px' className='rounded-circle' alt="" />
-                <p>{currentArticle.authorData.nameOfAuthor}</p>
+                <img src={state.authorData.profileImageUrl} width='60px' className='rounded-circle' alt="" />
+                <p>{state.authorData.nameOfAuthor}</p>
               </div>
 
             </div>
@@ -189,7 +153,7 @@ async function deleteComment(commentId) {
           </div>
           {/* content*/}
           <p className="lead mt-3 article-content" style={{ whiteSpace: "pre-line" }}>
-            {currentArticle.content}
+            {state.content}
           </p>
             {/* user commnets */}
           <div className='comments-container my-4'>
@@ -212,16 +176,16 @@ async function deleteComment(commentId) {
                         <FaUserCircle size={20} />
                         </div>
                         <p class="user-name">{commentObj?.nameOfUser}</p>
-                        <span class="timestamp">
+                         <span class="timestamp">
                         <FaRegClock className="time-icon" size={14} />
                           {commentObj?.dateOfModification || commentObj?.timestamp || 'Just now'}
-                        </span>
+                        </span> 
                       </div>
                       <div class="comment-body">
                       <FaRegComment className="quote-icon" size={16} />
                         <p class="comment-text">{commentObj?.comment}</p>
                       </div>
-                      <div class="comment-actions">
+                       <div class="comment-actions">
                         <button class="action-btn like-btn">
                         <FaRegThumbsUp size={16} />
                           Like
@@ -230,14 +194,15 @@ async function deleteComment(commentId) {
                         <FaReply size={16} />
                           Reply
                         </button>
-                        {/* Delete comment button - only visible to the user who posted it */}
-              {commentObj?.nameOfUser === currentUser.firstName && (
-                <button className="action-btn delete-btn" onClick={() => deleteComment(commentObj._id)}>
-                   <FaTrash size={16} />
-                  Delete
-                </button>
-              )}
-                      </div>
+                         {/* Delete comment button - only visible to the user who posted it */}
+                        {commentObj?.nameOfUser === currentUser.firstName && (
+                         <button className="action-btn delete-btn" onClick={() => deleteComment(commentObj._id)}>
+                         <FaTrash size={16} />
+                            Delete
+                            </button>
+                        )}
+
+                      </div> 
                     </div>
                     )
                   })
@@ -315,6 +280,13 @@ export default ArticleByID
 
 
 
+
+
+
+
+
+
+
 // import { useContext, useState } from 'react'
 // import { useLocation } from 'react-router-dom'
 // import { userAuthorContextObj } from '../../contexts/UserAuthorContext'
@@ -324,7 +296,7 @@ export default ArticleByID
 // import axios from 'axios'
 // import { useNavigate } from 'react-router-dom'
 // import { useAuth } from '@clerk/clerk-react'
-
+// import {  FaUserCircle, FaRegComment, FaRegClock, FaRegSmile, FaRegThumbsUp, FaReply, FaTrash } from 'react-icons/fa';
 
 // function ArticleByID() {
 
@@ -336,23 +308,23 @@ export default ArticleByID
 //   const { getToken } = useAuth()
 //   const [currentArticle,setCurrentArticle]=useState(state)
 //   const [commentStatus,setCommentStatus]=useState('')
-//   console.log(state)
+//   //console.log(state)
 
-//   to enable edit of article
+//   //to enable edit of article
 //   function enableEdit() {
 //     setEditArticleStatus(true)
 //   }
 
 
-//   to save modified article
+//   //to save modified article
 //   async function onSave(modifiedArticle) {
 //     const articleAfterChanges = { ...state, ...modifiedArticle }
 //     const token = await getToken()
 //     const currentDate = new Date();
-//     add date of modification
+//     //add date of modification
 //     articleAfterChanges.dateOfModification = currentDate.getDate() + "-" + currentDate.getMonth() + "-" + currentDate.getFullYear()
 
-//     make http post req
+//     //make http post req
 //     let res = await axios.put(`http://localhost:3000/author-api/article/${articleAfterChanges.articleId}`,
 //       articleAfterChanges,
 //       {
@@ -362,9 +334,9 @@ export default ArticleByID
 //       })
 
 //     if (res.data.message === 'article modified') {
-//       change edit article status to false
+//       //change edit article status to false
 //       setEditArticleStatus(false);
-//       navigate(`/author-profile/articles/${state.articleId}`, { state: res.data.payload })
+//       navigate(`/author-profile/articles/${currentArticle.articleId}`, { state: res.data.payload })
 //     }
 
 
@@ -373,51 +345,36 @@ export default ArticleByID
 
 //   //add comment by user
 //   async function addComment(commentObj){
-//     add name of user to comment obj
+//     //add name of user to comment obj
 //     commentObj.nameOfUser=currentUser.firstName;
 //     console.log(commentObj)
-//     http put
+//     //http put
 //     let res=await axios.put(`http://localhost:3000/user-api/comment/${currentArticle.articleId}`,commentObj);
 //     if(res.data.message==='comment added'){
 //       setCommentStatus(res.data.message)
-//       setCurrentArticle(res.data.payload)
-//       reset();
 //     }
 //   }
 
 
-
-//   // Add comment by user
-//   async function addComment(commentObj) {
-//     commentObj.nameOfUser = currentUser.firstName;
-
-//     try {
-//       // Add the comment
-//       let res = await axios.put(
-//         `http://localhost:3000/user-api/comment/${currentArticle.articleId}`,
-//         commentObj
-//       );
-
-//       if (res.data.message === 'comment added') {
-//         setCommentStatus(res.data.message);
-//         reset();
-
-//         // Fetch the updated article data to refresh the comments
-//         const updatedArticleRes = await axios.get(
-//           `http://localhost:3000/user-api/article/${state.articleId}`,state);
-
-//         if (updatedArticleRes.data.message === 'article found') {
-//           setCurrentArticle(updatedArticleRes.data.payload);
-//         }
-//       }
-//     } catch (error) {
-//       console.error('Error adding comment:', error);
-//       setCommentStatus('Failed to add comment');
-//     }
-//   }
+// //   // Add this function to delete comments
+// // async function deleteComment(commentId) {
+// //   try {
+// //     // Create API request to delete comment
+// //     let res = await axios.delete(`http://localhost:3000/user-api/comment/${currentArticle.articleId}/${commentId}`);
+    
+// //     if (res.data.message === 'comment deleted') {
+// //       // Update current article with the updated data
+// //       setCurrentArticle(res.data.payload);
+// //       setCommentStatus('Comment deleted successfully');
+// //     }
+// //   } catch (error) {
+// //     console.error('Error deleting comment:', error);
+// //     setCommentStatus('Failed to delete comment');
+// //   }
+// // }
 
 
-//   delete article
+//   //delete article
 //   async function deleteArticle(){
 //     state.isArticleActive=false;
 //     let res=await axios.put(`http://localhost:3000/author-api/articles/${state.articleId}`,state)
@@ -425,7 +382,7 @@ export default ArticleByID
 //       setCurrentArticle(res.data.payload)
 //   }
 //   }
-//   restore article
+//   //restore article
 //   async function restoreArticle(){
 //     state.isArticleActive=true;
 //     let res=await axios.put(`http://localhost:3000/author-api/articles/${state.articleId}`,state)
@@ -489,20 +446,49 @@ export default ArticleByID
 //           <p className="lead mt-3 article-content" style={{ whiteSpace: "pre-line" }}>
 //             {state.content}
 //           </p>
-//           {/* user commnets */}
-//           <div>
-//             <div className="comments my-4">
+//             {/* user commnets */}
+//           <div className='comments-container my-4'>
+//           <div class="comments-header">
+//           <FaRegComment className="header-icon" size={24} />
+//             <h3 class="comments-title">Comments</h3>
+//           </div>
+//             <div className="comments ">
 //               {
-//                 state.comments.length === 0 ? <p className='display-3'>No comments yet..</p> :
+//                 state.comments.length === 0 ? 
+//                 <div class="no-comments">
+//                  <FaRegSmile className="empty-icon" size={48} />
+//                 <p>No comments yet..</p>
+//               </div> :
 //                   state.comments.map(commentObj => {
-//                     return <div key={commentObj._id} >
-//                       <p className="user-name">
-//                         {commentObj?.nameOfUser}
-//                       </p>
-//                       <p className="comment">
-//                         {commentObj?.comment}
-//                       </p>
+//                     return (
+//                       <div key={commentObj._id} class="comment-card">
+//                       <div class="comment-header">
+//                         <div class="user-avatar ">
+//                         <FaUserCircle size={20} />
+//                         </div>
+//                         <p class="user-name">{commentObj?.nameOfUser}</p>
+//                         {/* <span class="timestamp">
+//                         <FaRegClock className="time-icon" size={14} />
+//                           {commentObj?.dateOfModification || commentObj?.timestamp || 'Just now'}
+//                         </span> */}
+//                       </div>
+//                       <div class="comment-body">
+//                       <FaRegComment className="quote-icon" size={16} />
+//                         <p class="comment-text">{commentObj?.comment}</p>
+//                       </div>
+//                       {/* <div class="comment-actions">
+//                         <button class="action-btn like-btn">
+//                         <FaRegThumbsUp size={16} />
+//                           Like
+//                         </button>
+//                         <button class="action-btn reply-btn">
+//                         <FaReply size={16} />
+//                           Reply
+//                         </button>
+                       
+//                       </div> */}
 //                     </div>
+//                     )
 //                   })
 //               }
 //             </div>
@@ -512,8 +498,8 @@ export default ArticleByID
 //           {
 //             currentUser.role==='user'&& (
 //             <form onSubmit={handleSubmit(addComment)} >
-//               <input type="text"  {...register("comment")} className="form-control mb-4" />
-//               <button className="btn btn-success">
+//               <input type="text"  {...register("comment")} className="form-control mb-4"  placeholder='Add a comment..'/>
+//               <button className=" btn btn-success comment-btn">
 //                 Add a comment
 //               </button>
 //             </form>
@@ -574,3 +560,5 @@ export default ArticleByID
 // }
 
 // export default ArticleByID
+
+

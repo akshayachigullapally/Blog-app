@@ -5,7 +5,7 @@ import { userAuthorContextObj } from '../../contexts/UserAuthorContext'
 import { useNavigate } from 'react-router-dom'
 
 function PostArticle() {
-
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
   const { register, handleSubmit, formState: { errors } } = useForm()
   const { currentUser } = useContext(userAuthorContextObj)
   const navigate = useNavigate()
@@ -41,7 +41,7 @@ function PostArticle() {
     articleObj.isArticleActive = true;
     //console.log(articleObj)
     //make HTTP POST req to create new article in backend
-    let res = await axios.post('http://localhost:3000/author-api/article', articleObj)
+    let res = await axios.post(`${BACKEND_URL}/author-api/article`, articleObj)
     if (res.status === 201) {
       //navigate to articles component
       navigate(`/author-profile/${currentUser.email}/articles`)

@@ -5,7 +5,7 @@ import {useAuth} from '@clerk/clerk-react'
 import SearchBar from './SearchBar'
 
 function Articles() {
-
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const [articles, setArticles] = useState([])
   const [error, setError] = useState('')
   const navigate=useNavigate()
@@ -18,7 +18,7 @@ function Articles() {
     //get jwt token
     const token=await getToken()
     //make authenticated req
-    let res = await axios.get('http://localhost:3000/author-api/articles',{
+    let res = await axios.get(`${BACKEND_URL}/author-api/articles`,{
       headers:{
         Authorization:`Bearer ${token}`
       }

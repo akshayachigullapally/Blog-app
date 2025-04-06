@@ -8,7 +8,7 @@ const UsersnAuthors = () => {
   const [users, setUsers] = useState([]);
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
   const { getToken } = useAuth();
-  const BACKEND_URL = "http://localhost:3000";
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem("currentuser"));

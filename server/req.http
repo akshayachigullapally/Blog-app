@@ -124,3 +124,9 @@ Content-Type: application/json
 }
 
 
+DELETE http://localhost:3000/user-api/comment/ARTICLE_ID
+Content-Type: application/json
+
+{
+    "comment": "best article"
+}

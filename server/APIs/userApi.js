@@ -36,4 +36,30 @@ userApp.get("/users",expressAsyncHandler(async (req, res) => {
   })
   )
 
+// Delete comment using articleId and comment text
+userApp.delete('/comment/:articleId', expressAsyncHandler(async (req, res) => {
+  const { comment } = req.body;
+  const { articleId } = req.params;
+
+  if (!comment) {
+      return res.status(400).send({ message: "Comment text is required" });
+  }
+
+  // Find article and remove the specific comment
+  const updatedArticle = await Article.findOneAndUpdate(
+      { articleId: articleId },
+      { $pull: { comments: { text: comment } } }, // Match by comment text
+      { new: true }
+  );
+
+  if (!updatedArticle) {
+      return res.status(404).send({ message: "Article not found or comment does not exist" });
+  }
+
+  res.status(200).send({ message: "Comment deleted", payload: updatedArticle });
+}));
+
+
+
+
 module.exports=userApp;
